@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>DSC BookStore - Home</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #ecf0f1;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1rem 2rem;
+            text-align: center;
+        }
+        .search-bar {
+            margin: 2rem auto;
+            text-align: center;
+        }
+        .search-bar input {
+            padding: 0.5rem;
+            width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .book-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            padding: 2rem;
+        }
+        .book-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 200px;
+        }
+        .book-card a {
+            text-decoration: none;
+            color: #3498db;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to DSC BookStore</h1>
+        <p>Hello, <span id="userName"></span>!</p>
+    </header>
+
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search for books..." />
+    </div>
+
+    <div class="book-list" id="bookList">
+        <!-- Book cards will be generated here -->
+    </div>
+
+    <script>
+        // Set up book list
+        const books = [
+            { title: "Book 1", pdf: "books/book1.pdf" },
+            { title: "Book 2", pdf: "books/book2.pdf" },
+            { title: "Book 3", pdf: "books/book3.pdf" }
+        ];
+
+        // Display user name
+        const userName = localStorage.getItem('username') || "Guest";
+        document.getElementById('userName').textContent = userName;
+
+        const bookList = document.getElementById('bookList');
+
+        function displayBooks(bookArray) {
+            bookList.innerHTML = '';
+            bookArray.forEach(book => {
+                const bookCard = document.createElement('div');
+                bookCard.className = 'book-card';
+                bookCard.innerHTML = `
+                    <h3>${book.title}</h3>
+                    <a href="${book.pdf}" target="_blank">Read PDF</a>
+                `;
+                bookList.appendChild(bookCard);
+            });
+        }
+
+        displayBooks(books);
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function () {
+            const searchTerm = this.value.toLowerCase();
+            const filteredBooks = books.filter(book =>
+                book.title.toLowerCase().includes(searchTerm)
+            );
+            displayBooks(filteredBooks);
+        });
+    </script>
+</body>
+</html>
